@@ -12,7 +12,7 @@ description = "A financial audit AI agent prototype focused on safe execution, c
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [
-    { name = "yanjieij", email = "yanjieij@gmail.com" }
+    { name = "Yanjieij" }
 ]
 license = { text = "MIT" }
 keywords = ["agent", "langgraph", "finance", "rag", "text-to-sql"]
