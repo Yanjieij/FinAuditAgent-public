@@ -1,0 +1,3 @@
+{"id": "rag-001", "question": "张三报销了多少机票？", "gold_answer": "1800.00 元", "expected_citation": {"chunk_id": "REIMB-001:2:r1", "page": 1}}
+{"id": "rag-002", "question": "报销单合计金额是多少？", "gold_answer": "2720.00 元", "expected_citation": {"chunk_id": "REIMB-001:2:r3", "page": 1}}
+{"id": "rag-003", "question": "出差事由是什么？", "gold_answer": "参加 2025 年春季客户大会", "expected_citation": {"chunk_id": "REIMB-001:3", "page": 1}}

@@ -1,0 +1,84 @@
+# FinAuditAgent conda 环境定义
+# -------------------------------------------------------------------
+# 为什么用 conda（不用 venv/poetry）：
+#   1. 作者在 PawAgent 里已验证 conda 跨平台体验最稳
+#   2. PaddleOCR / paddlepaddle 对 conda 友好，pip 装容易踩 glibc 坑
+#   3. 可选装 postgresql / redis 做本地 RLS 与语义缓存测试
+# -------------------------------------------------------------------
+# 使用方法：
+#   conda env create -f environment.yml
+#   conda activate fin-audit-agent
+# -------------------------------------------------------------------
+
+name: fin-audit-agent
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  - python=3.11
+  - pip
+
+  # 以下可选：不想本地装 Postgres/Redis 就注释掉，代码会自动回退
+  # - postgresql=16        # 痛点 3 本地测 RLS 用
+  # - redis=7              # observability/semantic_cache.py 可选
+
+  - pip:
+      # ========== LangGraph 核心（痛点 4） ==========
+      - langgraph>=0.2.50
+      - langgraph-checkpoint-sqlite
+      # - langgraph-checkpoint-postgres    # 生产再装
+      - langchain>=0.3.0
+      - langchain-core>=0.3.0
+      - langchain-openai>=0.2.0
+      - langchain-community>=0.3.0
+
+      # ========== 可观测 / 评测 ==========
+      - langfuse>=2.50.0
+      - opentelemetry-api
+      - opentelemetry-sdk
+      - opentelemetry-instrumentation-fastapi
+      - ragas>=0.2.0         # RAG 评测（faithfulness / answer_relevance）
+
+      # ========== API + 权限（痛点 3） ==========
+      - fastapi
+      - uvicorn[standard]
+      - authlib
+      - "python-jose[cryptography]"
+      - pyjwt
+
+      # ========== DB + SQL（痛点 2） ==========
+      - sqlalchemy>=2.0
+      - sqlglot>=25.0        # AST 解析与 allowlist
+      # - "psycopg[binary]"  # 有 Postgres 再装
+      - pyyaml               # 语义层 YAML 定义
+
+      # ========== 沙箱（痛点 1） ==========
+      - RestrictedPython>=7.0  # 本地轻量路径（用户选择）
+      # - e2b>=0.17            # 生产云沙箱，骨架引用；需要再装
+
+      # ========== RAG（痛点 5） ==========
+      # 小样本 demo 用；完整 OCR/LayoutLMv3 可按需开启
+      # - paddleocr==2.8.1
+      # - paddlepaddle==2.6.1
+      - FlagEmbedding          # bge-m3 / bge-reranker-v2-m3
+      - sentence-transformers
+      - chromadb>=0.5.0
+      - rank-bm25
+      - jieba                  # 中文分词
+
+      # ========== 数据 + 工具 ==========
+      - pandas
+      - numpy
+      - scipy
+      - matplotlib
+      - openpyxl
+      - typer                  # CLI
+      - python-dotenv
+      - httpx
+      - rich                   # CLI 漂亮输出
+
+      # ========== 测试 ==========
+      - pytest
+      - pytest-asyncio
+      - hypothesis

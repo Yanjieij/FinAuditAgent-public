@@ -1,0 +1,38 @@
+# FinAuditAgent 包元数据
+# 主要依赖在 environment.yml 里用 conda+pip 装，这里只做包定义方便 `pip install -e .`
+
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fin-audit-agent"
+version = "0.1.0"
+description = "A financial audit AI agent prototype focused on safe execution, control flow, and traceability"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+    { name = "yanjieij", email = "yanjieij@gmail.com" }
+]
+license = { text = "MIT" }
+keywords = ["agent", "langgraph", "finance", "rag", "text-to-sql"]
+
+# 依赖走 conda+pip（见 environment.yml），这里只留最小集便于 `pip install -e .` 时不报错
+dependencies = [
+    "langchain>=0.3.0",
+    "langchain-openai>=0.2.0",
+    "langgraph>=0.2.50",
+    "python-dotenv",
+    "typer",
+    "rich",
+]
+
+[project.scripts]
+fin-audit = "fin_audit_agent.cli:app"
+
+[tool.setuptools.packages.find]
+include = ["fin_audit_agent*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"

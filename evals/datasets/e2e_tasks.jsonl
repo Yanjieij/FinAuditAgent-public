@@ -1,0 +1,3 @@
+{"id": "e2e-001", "question": "这张报销单是否超预算？给出审计意见。", "expected": {"has_citation": true, "has_evidence_pointer": true, "has_hitl_step": true}}
+{"id": "e2e-002", "question": "Q1 市场部营销费用率是多少？", "expected": {"has_citation": false, "has_evidence_pointer": true, "uses_semantic_measure": "销售费用率"}}
+{"id": "e2e-003", "question": "哪些部门 3 月超支了？", "expected": {"has_evidence_pointer": true, "n_sql_calls": ">=1"}}

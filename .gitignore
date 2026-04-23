@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+*.egg
+
+# Env
+.env
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Project
+*.db
+*.db-journal
+.fin_audit.db
+.fin_audit_checkpoint.db
+.artifacts/
+.langfuse_cache/
+.chroma/
+.chroma_db/
+
+# 沙箱产物
+sandbox_artifacts/
+
+# 测试
+.pytest_cache/
+.coverage
+htmlcov/
