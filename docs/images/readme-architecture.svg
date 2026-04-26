@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">FinAuditAgent 总体架构</title>
+  <desc id="desc">FinAuditAgent 的入口鉴权、LangGraph 控制平面、证据工具层、副作用控制和横切治理。</desc>
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}.panel{fill:#fff;stroke:#cbd5e1;stroke-width:1.4}.box{fill:#f8fafc;stroke:#94a3b8;stroke-width:1.3}.blue{fill:#eff6ff;stroke:#60a5fa}.cyan{fill:#ecfeff;stroke:#22d3ee}.green{fill:#ecfdf5;stroke:#34d399}.orange{fill:#fff7ed;stroke:#fb923c}.red{fill:#fef2f2;stroke:#f87171}.dark{fill:#0f172a}.txt{font-family:Arial,'Noto Sans CJK SC','Microsoft YaHei',sans-serif;fill:#1e293b}.title{font-size:30px;font-weight:700}.sub{font-size:14px;fill:#64748b}.h2{font-size:18px;font-weight:700}.small{font-size:13px}.tiny{font-size:12px;fill:#64748b}.line{stroke:#475569;stroke-width:1.8;fill:none}
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L9,3 L0,6 Z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1280" height="720"/>
+  <text x="56" y="58" class="txt title">FinAuditAgent 架构总览</text>
+  <text x="56" y="86" class="txt sub">一条可恢复、可审计的财务审计 Agent 工作流：身份透传、证据取数、可信计算、人工审批、补偿执行</text>
+
+  <rect x="56" y="132" width="1168" height="360" rx="10" class="panel"/>
+
+  <rect x="86" y="188" width="170" height="72" rx="8" class="blue"/>
+  <text x="171" y="216" text-anchor="middle" class="txt h2">入口</text>
+  <text x="171" y="241" text-anchor="middle" class="txt small">CLI / API / User</text>
+
+  <rect x="86" y="312" width="170" height="84" rx="8" class="box"/>
+  <text x="171" y="342" text-anchor="middle" class="txt h2">鉴权</text>
+  <text x="171" y="367" text-anchor="middle" class="txt small">OAuth2 / JWT</text>
+  <text x="171" y="389" text-anchor="middle" class="txt tiny">UserToken → ContextVar</text>
+
+  <rect x="326" y="176" width="258" height="232" rx="8" class="panel"/>
+  <text x="455" y="210" text-anchor="middle" class="txt h2">LangGraph 控制平面</text>
+  <text x="455" y="234" text-anchor="middle" class="txt tiny">graph/builder.py · graph/state.py</text>
+  <rect x="362" y="266" width="82" height="40" rx="7" class="blue"/>
+  <text x="403" y="291" text-anchor="middle" class="txt small">Intake</text>
+  <rect x="466" y="266" width="82" height="40" rx="7" class="blue"/>
+  <text x="507" y="291" text-anchor="middle" class="txt small">Planner</text>
+  <rect x="362" y="334" width="82" height="40" rx="7" class="cyan"/>
+  <text x="403" y="359" text-anchor="middle" class="txt small">Fetch</text>
+  <rect x="466" y="334" width="82" height="40" rx="7" class="green"/>
+  <text x="507" y="359" text-anchor="middle" class="txt small">Drafter</text>
+
+  <rect x="654" y="176" width="300" height="232" rx="8" class="panel"/>
+  <text x="804" y="210" text-anchor="middle" class="txt h2">证据工具层</text>
+  <text x="804" y="234" text-anchor="middle" class="txt tiny">SQL · RAG · Sandbox</text>
+  <rect x="690" y="266" width="92" height="58" rx="8" class="cyan"/>
+  <text x="736" y="290" text-anchor="middle" class="txt small">SQL</text>
+  <text x="736" y="310" text-anchor="middle" class="txt tiny">只读 + AST</text>
+  <rect x="806" y="266" width="92" height="58" rx="8" class="green"/>
+  <text x="852" y="290" text-anchor="middle" class="txt small">Doc RAG</text>
+  <text x="852" y="310" text-anchor="middle" class="txt tiny">page + bbox</text>
+  <rect x="748" y="338" width="92" height="58" rx="8" class="orange"/>
+  <text x="794" y="362" text-anchor="middle" class="txt small">Sandbox</text>
+  <text x="794" y="382" text-anchor="middle" class="txt tiny">cells</text>
+
+  <rect x="1024" y="176" width="170" height="232" rx="8" class="panel"/>
+  <text x="1109" y="210" text-anchor="middle" class="txt h2">副作用控制</text>
+  <rect x="1054" y="256" width="110" height="48" rx="8" class="red"/>
+  <text x="1109" y="286" text-anchor="middle" class="txt small">HITL 审批</text>
+  <rect x="1054" y="330" width="110" height="48" rx="8" class="orange"/>
+  <text x="1109" y="360" text-anchor="middle" class="txt small">Saga 补偿</text>
+
+  <path d="M171 260 V312" class="line" marker-end="url(#arrow)"/>
+  <path d="M256 354 H326" class="line" marker-end="url(#arrow)"/>
+  <path d="M584 292 H654" class="line" marker-end="url(#arrow)"/>
+  <path d="M954 292 H1024" class="line" marker-end="url(#arrow)"/>
+  <path d="M954 354 H1024" class="line" marker-end="url(#arrow)"/>
+
+  <rect x="56" y="526" width="1168" height="116" rx="10" class="panel"/>
+  <text x="84" y="560" class="txt h2">横切治理</text>
+  <rect x="210" y="548" width="160" height="54" rx="8" class="box"/>
+  <text x="290" y="579" text-anchor="middle" class="txt small">Checkpoint / Resume</text>
+  <rect x="400" y="548" width="140" height="54" rx="8" class="box"/>
+  <text x="470" y="579" text-anchor="middle" class="txt small">Audit Log</text>
+  <rect x="570" y="548" width="140" height="54" rx="8" class="box"/>
+  <text x="640" y="579" text-anchor="middle" class="txt small">Lineage</text>
+  <rect x="740" y="548" width="170" height="54" rx="8" class="box"/>
+  <text x="825" y="579" text-anchor="middle" class="txt small">Observability</text>
+  <rect x="940" y="548" width="140" height="54" rx="8" class="box"/>
+  <text x="1010" y="579" text-anchor="middle" class="txt small">PII Redaction</text>
+
+  <rect x="424" y="666" width="432" height="40" rx="20" class="dark"/>
+  <text x="640" y="691" text-anchor="middle" fill="#fff" font-family="Arial,'Noto Sans CJK SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="700">输出：带 citation 与 exec_id#cell 的审计报告</text>
+</svg>

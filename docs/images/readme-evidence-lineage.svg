@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">证据链与数字可信链路</title>
+  <desc id="desc">SQL、文档和沙箱计算如何形成带 citation 与 exec_id#cell 的审计报告。</desc>
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}.panel{fill:#fff;stroke:#cbd5e1;stroke-width:1.4}.blue{fill:#eff6ff;stroke:#60a5fa}.green{fill:#ecfdf5;stroke:#34d399}.orange{fill:#fff7ed;stroke:#fb923c}.red{fill:#fef2f2;stroke:#f87171}.dark{fill:#0f172a}.txt{font-family:Arial,'Noto Sans CJK SC','Microsoft YaHei',sans-serif;fill:#1e293b}.title{font-size:30px;font-weight:700}.sub{font-size:14px;fill:#64748b}.h2{font-size:18px;font-weight:700}.small{font-size:13px}.tiny{font-size:12px;fill:#64748b}.line{stroke:#475569;stroke-width:1.8;fill:none}.dash{stroke:#64748b;stroke-width:1.6;stroke-dasharray:6 6;fill:none}
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L9,3 L0,6 Z" fill="#475569"/></marker>
+    <marker id="dashArrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L9,3 L0,6 Z" fill="#64748b"/></marker>
+  </defs>
+
+  <rect class="bg" width="1280" height="720"/>
+  <text x="56" y="58" class="txt title">证据链：报告里的数字必须能追溯</text>
+  <text x="56" y="86" class="txt sub">Drafter 负责组织语言；数字真值来自 SQL、文档和沙箱 cell，并由 number_verifier 校验</text>
+
+  <rect x="56" y="142" width="250" height="104" rx="8" class="blue"/>
+  <text x="86" y="174" class="txt h2">结构化数据</text>
+  <text x="86" y="202" class="txt small">sql_results[]</text>
+  <text x="86" y="224" class="txt tiny">sql_id · rows · df_ref</text>
+
+  <rect x="56" y="306" width="250" height="104" rx="8" class="green"/>
+  <text x="86" y="338" class="txt h2">文档证据</text>
+  <text x="86" y="366" class="txt small">rag_chunks[]</text>
+  <text x="86" y="388" class="txt tiny">chunk_id · page · bbox</text>
+
+  <rect x="56" y="470" width="250" height="104" rx="8" class="orange"/>
+  <text x="86" y="502" class="txt h2">沙箱计算</text>
+  <text x="86" y="530" class="txt small">sandbox_execs[]</text>
+  <text x="86" y="552" class="txt tiny">exec_id · cells · artifacts</text>
+
+  <rect x="430" y="198" width="260" height="320" rx="10" class="panel"/>
+  <text x="560" y="232" text-anchor="middle" class="txt h2">证据上下文</text>
+  <rect x="470" y="266" width="180" height="52" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="560" y="298" text-anchor="middle" class="txt small">SQL[SQL-001]</text>
+  <rect x="470" y="338" width="180" height="52" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="560" y="370" text-anchor="middle" class="txt small">DOC[REIMB:3]</text>
+  <rect x="470" y="410" width="180" height="64" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="560" y="436" text-anchor="middle" class="txt small">EXEC[a1b2c3]</text>
+  <text x="560" y="458" text-anchor="middle" class="txt tiny">OVERRUN_AMOUNT=720</text>
+
+  <rect x="814" y="198" width="330" height="150" rx="10" class="panel"/>
+  <text x="844" y="232" class="txt h2">审计意见草案</text>
+  <text x="844" y="266" class="txt small">超预算 720 元</text>
+  <text x="844" y="290" class="txt tiny">[[exec_id=a1b2c3#cell=OVERRUN_AMOUNT]]</text>
+  <text x="844" y="318" class="txt tiny">[citation:REIMB:3#page=1#bbox=50,150,550,320]</text>
+
+  <rect x="814" y="426" width="330" height="128" rx="10" class="red"/>
+  <text x="844" y="460" class="txt h2">number_verifier</text>
+  <text x="844" y="492" class="txt small">抽取财务数字 → 检查 exec_id#cell</text>
+  <text x="844" y="520" class="txt small">比较文本数字与 cell 真值</text>
+
+  <path d="M306 194 H430" class="line" marker-end="url(#arrow)"/>
+  <path d="M306 358 H430" class="line" marker-end="url(#arrow)"/>
+  <path d="M306 522 H368 V442 H430" class="line" marker-end="url(#arrow)"/>
+  <path d="M690 358 H762 V273 H814" class="line" marker-end="url(#arrow)"/>
+  <path d="M979 348 V426" class="line" marker-end="url(#arrow)"/>
+  <path d="M814 490 H736 V496 H690" class="dash" marker-end="url(#dashArrow)"/>
+  <text x="728" y="576" class="txt tiny">缺引用或数值不一致：回到 Drafter 重写</text>
+
+  <rect x="356" y="638" width="568" height="42" rx="21" class="dark"/>
+  <text x="640" y="664" text-anchor="middle" fill="#fff" font-family="Arial,'Noto Sans CJK SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="700">最终报告 = Markdown + citation + exec_id#cell + lineage 记录</text>
+</svg>

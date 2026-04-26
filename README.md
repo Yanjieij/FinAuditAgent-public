@@ -14,9 +14,13 @@
 
 ## 架构
 
-![总体架构](docs/images/architecture-overview.drawio.png)
+![总体架构](docs/images/readme-architecture.svg)
 
-一次请求经过 9 个节点的 LangGraph 状态机：
+项目可以分成四层：入口鉴权层负责把用户身份放进 `ContextVar`；LangGraph 控制层负责固定流程、条件路由和 checkpoint；证据引擎层负责 SQL、文档和沙箱计算；治理层负责审计日志、可观测、成本预算、数据血缘与脱敏。
+
+一次请求经过 9 个节点的 LangGraph 状态机，关键节点和状态字段如下：
+
+![端到端状态流](docs/images/readme-state-flow.svg)
 
 ```
 User Input → Intake → Planner → DataFetch ──→ Analyze ──→ Drafter
@@ -38,6 +42,18 @@ User Input → Intake → Planner → DataFetch ──→ Analyze ──→ Draf
 - **Notify** 返回最终结果
 
 审批被拒绝时路由到 Clarify 节点，根据反馈修改后重新走 Drafter → HumanReview 循环。
+
+---
+
+## 证据链与数字可信
+
+![证据链与数字可信链路](docs/images/readme-evidence-lineage.svg)
+
+这个项目的核心不是让 LLM "更认真地写数字"，而是把数字的信任边界下沉到工具执行结果：SQL 结果、PDF 版面证据和 sandbox cell。Drafter 只能把这些证据组织成报告；`number_verifier` 会逐个扫描报告里的财务数字，确保它们紧跟 `[[exec_id=...#cell=...]]` 标签，并且文本值和 cell 真值一致。
+
+结构化数据和文档证据分别走两条管线，最后都汇入 Drafter 的证据上下文：
+
+![SQL 与文档 RAG 双证据管线](docs/images/readme-data-pipelines.svg)
 
 ---
 
@@ -131,6 +147,8 @@ final = graph.invoke(None, config=config)
 **代码位置**：`fin_audit_agent/graph/builder.py`、`hitl.py`、`checkpoint.py`
 
 ### 5. 失败要能回滚
+
+![人工审批与 Saga 补偿](docs/images/readme-hitl-saga.svg)
 
 **问题**：Execute 节点可能做多步有副作用的操作（记账 + 更新工单 + 发通知）。如果第三步失败，前两步不能留半成品。
 
